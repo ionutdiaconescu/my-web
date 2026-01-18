@@ -1,143 +1,38 @@
 "use client";
 
-import React, { useEffect, useRef, useState } from "react";
-import { MdOpenInNew } from "react-icons/md";
+import React, { useState } from "react";
+import { createPortal } from "react-dom";
+import { MdClose, MdOpenInNew } from "react-icons/md";
 import work from "../data/dataWorkSection";
 import type { WorkProject } from "../data/dataType";
 
 const WorkSection = () => {
-  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
-  const [expandedIndex, setExpandedIndex] = useState<number | null>(null);
-  const [slideIndex, setSlideIndex] = useState(0);
-  const [mobileSlideIndex, setMobileSlideIndex] = useState(0);
-  const [overlayStyle, setOverlayStyle] = useState<React.CSSProperties | null>(
-    null
+  const [previewProjectIndex, setPreviewProjectIndex] = useState<number | null>(
+    null,
   );
-  const slideInterval = useRef<number | null>(null);
-  const mobileSlideInterval = useRef<number | null>(null);
+  const [previewImageIndex, setPreviewImageIndex] = useState(0);
 
-  useEffect(() => {
-    if (hoveredIndex === null) {
-      if (slideInterval.current) {
-        window.clearInterval(slideInterval.current);
-        slideInterval.current = null;
-      }
-      return;
-    }
+  const openPreview = (projectIndex: number) => {
+    setPreviewProjectIndex(projectIndex);
+    setPreviewImageIndex(0);
+  };
 
-    setSlideIndex(0);
-    const imgs = work[hoveredIndex]?.images ?? [];
-    if (imgs.length <= 1) return;
+  const closePreview = () => {
+    setPreviewProjectIndex(null);
+    setPreviewImageIndex(0);
+  };
 
-    slideInterval.current = window.setInterval(() => {
-      setSlideIndex((s) => (s + 1) % imgs.length);
-    }, 2000);
+  const goPrev = () => {
+    if (previewProjectIndex === null) return;
+    const total = work[previewProjectIndex].images.length;
+    setPreviewImageIndex((idx) => (idx - 1 + total) % total);
+  };
 
-    return () => {
-      if (slideInterval.current) {
-        window.clearInterval(slideInterval.current);
-        slideInterval.current = null;
-      }
-    };
-  }, [hoveredIndex]);
-
-  // Mobile slideshow when expanded
-  useEffect(() => {
-    if (expandedIndex === null) {
-      if (mobileSlideInterval.current) {
-        window.clearInterval(mobileSlideInterval.current);
-        mobileSlideInterval.current = null;
-      }
-      return;
-    }
-
-    setMobileSlideIndex(0);
-    const imgs = work[expandedIndex]?.images ?? [];
-    if (imgs.length <= 1) return;
-
-    mobileSlideInterval.current = window.setInterval(() => {
-      setMobileSlideIndex((s) => (s + 1) % imgs.length);
-    }, 3000);
-
-    return () => {
-      if (mobileSlideInterval.current) {
-        window.clearInterval(mobileSlideInterval.current);
-        mobileSlideInterval.current = null;
-      }
-    };
-  }, [expandedIndex]);
-
-  // apply / remove aside hide effect when preview active
-  // apply / remove aside hide effect when preview active
-  useEffect(() => {
-    const aside = document.querySelector("aside");
-    if (!aside) return;
-
-    if (hoveredIndex !== null) {
-      const updateOverlay = () => {
-        const asideRect = aside.getBoundingClientRect();
-        const navCardElement = aside.querySelector(
-          ".card-design"
-        ) as HTMLElement;
-        if (!navCardElement) return;
-
-        const navCardHeight = navCardElement.offsetHeight;
-        const navCardWidth = navCardElement.offsetWidth;
-        // Prioritiza width - height se adapteaza dupa continut
-        const maxWidth = asideRect.width * 1.2;
-        const maxHeight = Math.min(
-          navCardHeight * 1.1,
-          window.innerHeight * 0.65
-        );
-
-        // Centrat vertical pe ecran
-        const topPos = (window.innerHeight - maxHeight) / 2;
-
-        // Calculez centrul navCard-ului pe ecran
-        const navCardCenterX = asideRect.left + asideRect.width / 2;
-        // Translatex trebuie sa mute mai mult la stanga
-        const translateX = navCardCenterX - window.innerWidth / 2 - 650;
-
-        setOverlayStyle({
-          position: "absolute",
-          left: "50%",
-          top: topPos + "px",
-          width: maxWidth + "px",
-          height: maxHeight + "px",
-          zIndex: 2000,
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          padding: "1.5rem",
-          pointerEvents: "none",
-          boxSizing: "border-box",
-          transform: `translateX(${translateX}px)`,
-        });
-      };
-
-      updateOverlay();
-      (aside as HTMLElement).style.transition =
-        "transform 500ms ease, opacity 500ms ease, filter 500ms ease";
-      (aside as HTMLElement).style.transform = "translateX(-5%) scale(.98)";
-      (aside as HTMLElement).style.opacity = "0.05";
-      (aside as HTMLElement).style.filter = "blur(4px)";
-
-      window.addEventListener("scroll", updateOverlay, { passive: true });
-      window.addEventListener("resize", updateOverlay);
-
-      return () => {
-        (aside as HTMLElement).style.transform = "";
-        (aside as HTMLElement).style.opacity = "";
-        (aside as HTMLElement).style.filter = "";
-        window.removeEventListener("scroll", updateOverlay);
-        window.removeEventListener("resize", updateOverlay);
-      };
-    } else {
-      (aside as HTMLElement).style.transform = "";
-      (aside as HTMLElement).style.opacity = "";
-      (aside as HTMLElement).style.filter = "";
-    }
-  }, [hoveredIndex]);
+  const goNext = () => {
+    if (previewProjectIndex === null) return;
+    const total = work[previewProjectIndex].images.length;
+    setPreviewImageIndex((idx) => (idx + 1) % total);
+  };
   return (
     <main id="projects" className="card-design w-full">
       <section className="flex flex-col gap-2">
@@ -154,21 +49,9 @@ const WorkSection = () => {
           {work.map((project: WorkProject, idx: number) => (
             <div
               key={project.title}
-              className="border border-gray-500/50 rounded-2xl py-3 px-4 mb-4 bg-gray-800/70 text-(--secondary-accent) relative lg:cursor-default cursor-pointer"
-              onClick={() => {
-                // Only handle click on mobile (not desktop)
-                if (window.innerWidth < 1024) {
-                  setExpandedIndex(expandedIndex === idx ? null : idx);
-                }
-              }}
+              className="border border-gray-500/50 rounded-2xl py-3 px-4 mb-4 bg-gray-800/70 text-(--secondary-accent) relative cursor-pointer"
+              onClick={() => openPreview(idx)}
             >
-              {/* Desktop-only hover layer - invisible and only active on large screens */}
-              <div
-                onMouseEnter={() => setHoveredIndex(idx)}
-                onMouseLeave={() => setHoveredIndex(null)}
-                className="hidden lg:block absolute inset-0 z-10 pointer-events-auto rounded-2xl"
-              />
-
               <div className="flex items-start justify-between gap-4">
                 <div>
                   <p className="font-bold text-(--accent)">{project.title}</p>
@@ -186,26 +69,6 @@ const WorkSection = () => {
                 </div>
 
                 <div className="flex items-center gap-3">
-                  {/* Mobile expand indicator - arrow shows expand state */}
-                  <div className="lg:hidden flex items-center justify-center w-9 h-9 rounded-full bg-gray-800/60 border border-gray-500/40 pointer-events-none">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      className={`w-5 h-5 transition-transform ${
-                        expandedIndex === idx ? "rotate-180" : ""
-                      }`}
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M19 9l-7 7-7-7"
-                      />
-                    </svg>
-                  </div>
-
                   {project.link && (
                     <a
                       href={project.link}
@@ -221,71 +84,98 @@ const WorkSection = () => {
                 </div>
               </div>
 
-              {/* Mobile expanded slideshow - single card with auto transitions */}
-              {expandedIndex === idx && (
-                <div className="lg:hidden mt-4">
-                  <div className="relative w-full rounded-xl overflow-hidden border border-gray-500/40 bg-gray-900/50">
-                    <div className="relative w-full aspect-video">
-                      <img
-                        src={project.images[mobileSlideIndex]}
-                        alt={`${project.title} screenshot ${
-                          mobileSlideIndex + 1
-                        }`}
-                        className="w-full h-full object-cover"
-                      />
-                    </div>
-                    {/* Slide indicators */}
-                    {project.images.length > 1 && (
-                      <div className="absolute bottom-2 left-0 right-0 flex justify-center gap-1.5">
-                        {project.images.map((_: string, imgIdx: number) => (
-                          <button
-                            key={imgIdx}
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              setMobileSlideIndex(imgIdx);
-                            }}
-                            className={`h-1 rounded-full transition-all ${
-                              imgIdx === mobileSlideIndex
-                                ? "bg-(--accent) w-4"
-                                : "bg-white/40 w-1"
-                            }`}
-                            aria-label={`Go to slide ${imgIdx + 1}`}
-                          />
-                        ))}
-                      </div>
-                    )}
+              <div className="mt-4">
+                <div className="relative w-full rounded-xl overflow-hidden border border-gray-500/40 bg-gray-900/50">
+                  <div className="relative w-full aspect-video">
+                    <img
+                      src={project.images[0]}
+                      alt={`${project.title} screenshot`}
+                      className="w-full h-full object-cover"
+                    />
                   </div>
                 </div>
-              )}
+              </div>
             </div>
           ))}
         </div>
 
-        {/* Desktop Preview overlay - positioned over the aside - MUST BE LAST ELEMENT */}
-        {hoveredIndex !== null && overlayStyle && (
-          <div
-            style={{ ...overlayStyle, display: overlayStyle.display }}
-            className="fixed pointer-events-none"
-          >
-            <div className="w-full h-full bg-linear-to-b from-gray-900/95 to-gray-900/85 rounded-3xl p-4 pointer-events-auto border border-gray-500/50 flex flex-col shadow-2xl">
-              <div className="flex-1 overflow-hidden rounded-2xl">
-                <img
-                  src={work[hoveredIndex].images[slideIndex]}
-                  alt={work[hoveredIndex].title}
-                  className="w-full h-full object-cover rounded-2xl"
-                />
+        {previewProjectIndex !== null &&
+          typeof document !== "undefined" &&
+          createPortal(
+            <div
+              className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/40 backdrop-blur-md"
+              onClick={closePreview}
+            >
+              <div
+                className="relative w-screen h-screen border border-white/20 bg-white/10 backdrop-blur-xl shadow-2xl p-4 sm:p-6"
+                onClick={(e) => e.stopPropagation()}
+              >
+                <button
+                  onClick={closePreview}
+                  className="absolute right-4 top-4 inline-flex items-center justify-center w-10 h-10 rounded-full border border-white/20 bg-white/10 text-white hover:bg-white/20 transition"
+                  aria-label="Close preview"
+                >
+                  <MdClose className="w-5 h-5" />
+                </button>
+
+                <div className="h-full w-full flex items-center justify-center">
+                  <button
+                    onClick={goPrev}
+                    className="hidden sm:inline-flex items-center justify-center w-10 h-10 rounded-full border border-white/20 bg-white/10 text-white hover:bg-white/20 transition mr-3"
+                    aria-label="Previous image"
+                  >
+                    <span className="text-xl">‹</span>
+                  </button>
+
+                  <div className="relative w-full h-full rounded-2xl overflow-hidden border border-white/10">
+                    <img
+                      src={work[previewProjectIndex].images[previewImageIndex]}
+                      alt={`${work[previewProjectIndex].title} preview ${
+                        previewImageIndex + 1
+                      }`}
+                      className="w-full h-full object-contain"
+                    />
+                  </div>
+
+                  <button
+                    onClick={goNext}
+                    className="hidden sm:inline-flex items-center justify-center w-10 h-10 rounded-full border border-white/20 bg-white/10 text-white hover:bg-white/20 transition ml-3"
+                    aria-label="Next image"
+                  >
+                    <span className="text-xl">›</span>
+                  </button>
+                </div>
+
+                <div className="mt-3 flex items-center justify-between text-white/80 text-sm">
+                  <span className="font-semibold text-(--accent)">
+                    {work[previewProjectIndex].title}
+                  </span>
+                  <span>
+                    {previewImageIndex + 1} /{" "}
+                    {work[previewProjectIndex].images.length}
+                  </span>
+                </div>
+
+                <div className="sm:hidden mt-3 flex items-center justify-center gap-3">
+                  <button
+                    onClick={goPrev}
+                    className="inline-flex items-center justify-center w-10 h-10 rounded-full border border-white/20 bg-white/10 text-white hover:bg-white/20 transition"
+                    aria-label="Previous image"
+                  >
+                    <span className="text-xl">‹</span>
+                  </button>
+                  <button
+                    onClick={goNext}
+                    className="inline-flex items-center justify-center w-10 h-10 rounded-full border border-white/20 bg-white/10 text-white hover:bg-white/20 transition"
+                    aria-label="Next image"
+                  >
+                    <span className="text-xl">›</span>
+                  </button>
+                </div>
               </div>
-              <div className="mt-3">
-                <p className="font-bold text-lg text-(--accent)">
-                  {work[hoveredIndex].title}
-                </p>
-                <p className="text-sm text-(--smoke)">
-                  {work[hoveredIndex].description}
-                </p>
-              </div>
-            </div>
-          </div>
-        )}
+            </div>,
+            document.body,
+          )}
       </section>
     </main>
   );

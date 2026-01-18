@@ -2,18 +2,19 @@ import type { OverviewItem } from "./dataType";
 
 export const overviewItems: OverviewItem[] = [
   {
-    title: "Product-driven",
-    description:
-      "Translate requirements into flows that keep users focused and reduce friction.",
+    title: "Discovery",
+    description: "Clarify goals and define direction.",
   },
   {
-    title: "Code quality",
-    description:
-      "Component-based architecture that teams can extend without surprises.",
+    title: "Architecture",
+    description: "Choose the stack and delivery plan.",
   },
   {
-    title: "Performance",
-    description:
-      "Attention to loading states, bundle size, and perceived speed.",
+    title: "Build",
+    description: "Build end-to-end with performance focus.",
+  },
+  {
+    title: "Launch",
+    description: "Test, ship, and optimize continuously.",
   },
 ];

@@ -1,4 +1,4 @@
-export const navCardData = {
+export const profileCardData = {
   name: "Ionut Diaconescu",
   role: "Front-End Developer",
   description:

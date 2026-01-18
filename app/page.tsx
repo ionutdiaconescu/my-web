@@ -1,4 +1,4 @@
-import NavCard from "./components/NavCard";
+import ProfileCard from "./components/ProfileCard";
 import OverviewSection from "./components/OverviewSection";
 import SkillsSection from "./components/SkillsSection";
 import WorkSection from "./components/WorkSection";
@@ -6,9 +6,9 @@ import WorkSection from "./components/WorkSection";
 export default function Home() {
   return (
     <div className="min-h-screen w-full font-sans bg-(--background)">
-      <main className="grid min-h-screen h-full w-full grid-cols-1 items-start justify-center gap-8 px-8 py-10 lg:grid-cols-[0.3fr_0.9fr]">
-        <aside className="flex justify-center lg:items-start h-full w-full ">
-          <NavCard />
+      <main className="grid min-h-screen h-full w-full grid-cols-1 items-start justify-center gap-8 px-8 py-10 pt-24 min-[1400px]:grid-cols-[0.3fr_0.9fr]">
+        <aside className="flex justify-center min-[1400px]:items-start h-full w-full ">
+          <ProfileCard />
         </aside>
         <section className="space-y-5">
           <OverviewSection />

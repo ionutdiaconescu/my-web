@@ -9,6 +9,7 @@
   --secondary-accent: #a2f4fd;
   --smoke: #b1b8c4;
   --card-radius: 12px;
+  scroll-behavior: smooth;
 }
 
 /* Keep prefers-color-scheme dark block in case OS signals dark mode — values match defaults */
@@ -27,6 +28,11 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
   margin: 0;
+}
+
+main[id],
+section[id] {
+  scroll-margin-top: 96px;
 }
 @layer components {
   .card-design {
