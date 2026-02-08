@@ -1,16 +1,10 @@
-type WorkProject = {
-  title: string;
-  description: string;
-  usedTools: string[];
-  images: string[];
-  link?: string;
-};
+import type { WorkProject } from "./dataType";
 
 const work: WorkProject[] = [
   {
-    title: "Ambalaje DnD - Magazin online",
+    title: "Ambalaje DnD — Online store",
     description:
-      "Site e-commerce pentru ambalaje, caserole și produse de menaj.",
+      "E-commerce website for packaging, containers, and household products.",
     usedTools: ["React", "CSS", "Tailwind", "Firebase"],
     images: [
       "/images/dndPerformance/DNDimg1.webp",
@@ -22,25 +16,25 @@ const work: WorkProject[] = [
   {
     title: "TeamChat",
     description:
-      "A modern chat app created to comunicate with your friends or coworkers.",
+      "A modern chat app created to communicate with your friends or coworkers.",
     usedTools: ["Next.js", "React", "Tailwind"],
     images: [
-      "/images/TeamChat/TeamChat1.webp",
-      "/images/TeamChat/TeamChat2.webp",
-      "/images/TeamChat/TeamChat3.webp",
+      "/images/teamChat/TeamChat1.webp",
+      "/images/teamChat/TeamChat2.webp",
+      "/images/teamChat/TeamChat3.webp",
     ],
     link: "https://example.com/real-estate",
   },
   {
     title: "Asociatia Zambete Magice",
     description:
-      "A nonprofit organization focused on creating donation campaigns to help underprivileged children in Timișoara, providing support, care, and opportunities for a better tomorrow.",
+      "A nonprofit organization focused on donation campaigns to help underprivileged children in Timisoara, providing support, care, and opportunities for a better tomorrow.",
     usedTools: [
       "React",
       "TypeScript",
       "Tailwind",
       "Node.js",
-      "Postgress",
+      "Postgres",
       "Strapi CMS",
     ],
     images: [
@@ -52,7 +46,7 @@ const work: WorkProject[] = [
   },
   {
     title: "Arde Car Wash",
-    description: "A Self-service car wash website",
+    description: "A self-service car wash website",
     usedTools: ["React", "Tailwind"],
     images: [
       "/images/carWash/CarWash1.webp",

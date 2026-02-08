@@ -14,6 +14,7 @@ export const profileCardData = {
 };
 
 export const navLinks = [
+  { label: "Home", href: "#home" },
   { label: "Overview", href: "#overview" },
   { label: "Skills", href: "#skills" },
   { label: "Recent Projects", href: "#projects" },

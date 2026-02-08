@@ -7,7 +7,7 @@ import { FaLinkedin, FaGithub } from "react-icons/fa";
 
 const ProfileCard = () => {
   return (
-    <main
+    <section
       id="home"
       className="lg:sticky lg:top-24 lg:overflow-hidden card-design"
     >
@@ -96,7 +96,7 @@ const ProfileCard = () => {
           </div>
         </section>
       </div>
-    </main>
+    </section>
   );
 };
 

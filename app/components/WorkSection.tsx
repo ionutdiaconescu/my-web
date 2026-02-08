@@ -1,24 +1,253 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
+import Image from "next/image";
 import { createPortal } from "react-dom";
 import { MdClose, MdOpenInNew } from "react-icons/md";
 import work from "../data/dataWorkSection";
 import type { WorkProject } from "../data/dataType";
+
+type WorkCardProps = {
+  project: WorkProject;
+  onOpen: () => void;
+};
+
+const WorkCard = ({ project, onOpen }: WorkCardProps) => {
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
+    if (event.key === "Enter" || event.key === " ") {
+      event.preventDefault();
+      onOpen();
+    }
+  };
+
+  return (
+    <div
+      className="border border-gray-500/50 rounded-2xl py-3 px-4 mb-4 bg-gray-800/70 text-(--secondary-accent) relative cursor-pointer"
+      onClick={onOpen}
+      onKeyDown={handleKeyDown}
+      role="button"
+      tabIndex={0}
+      aria-label={`Open ${project.title} preview`}
+    >
+      <div className="flex items-start justify-between gap-4">
+        <div>
+          <p className="font-bold text-(--accent)">{project.title}</p>
+          <span className="block mt-1">{project.description}</span>
+          <ul className="flex flex-wrap items-center gap-2 mt-3">
+            {project.usedTools.map((tool: string) => (
+              <li
+                key={tool}
+                className="text-sm border border-gray-500/40 rounded-full py-1 px-2 bg-gray-800/60"
+              >
+                {tool}
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        <div className="flex items-center gap-3">
+          {project.link && (
+            <a
+              href={project.link}
+              target="_blank"
+              rel="noreferrer"
+              onClick={(e) => e.stopPropagation()}
+              className="relative z-20 inline-flex items-center justify-center w-9 h-9 rounded-full bg-gray-800/60 border border-gray-500/40 hover:bg-cyan-500/70 hover:border-cyan-500/60 transition-all duration-300 hover:scale-110 hover:shadow-md hover:shadow-cyan-500/30"
+              aria-label={`Open ${project.title}`}
+            >
+              <MdOpenInNew className="w-4 h-4" />
+            </a>
+          )}
+        </div>
+      </div>
+
+      <div className="mt-4">
+        <div className="relative w-full rounded-xl overflow-hidden border border-gray-500/40 bg-gray-900/50">
+          <div className="relative w-full aspect-video">
+            <Image
+              src={project.images[0]}
+              alt={`${project.title} screenshot`}
+              fill
+              sizes="(max-width: 768px) 100vw, 50vw"
+              className="object-cover"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+type PreviewModalProps = {
+  project: WorkProject;
+  imageIndex: number;
+  onClose: () => void;
+  onPrev: () => void;
+  onNext: () => void;
+  dialogTitleId?: string;
+  dialogRef: React.RefObject<HTMLDivElement | null>;
+  onTouchStart: (event: React.TouchEvent<HTMLDivElement>) => void;
+  onTouchMove: (event: React.TouchEvent<HTMLDivElement>) => void;
+  onTouchEnd: () => void;
+};
+
+const PreviewModal = ({
+  project,
+  imageIndex,
+  onClose,
+  onPrev,
+  onNext,
+  dialogTitleId,
+  dialogRef,
+  onTouchStart,
+  onTouchMove,
+  onTouchEnd,
+}: PreviewModalProps) => (
+  <div
+    className="fixed inset-0 z-9999 flex items-center justify-center bg-black/40 backdrop-blur-md"
+    onClick={onClose}
+  >
+    <div
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby={dialogTitleId}
+      tabIndex={-1}
+      ref={dialogRef}
+      className="relative w-screen h-screen border border-white/20 bg-white/10 backdrop-blur-xl shadow-2xl p-4 sm:p-6"
+      onClick={(e) => e.stopPropagation()}
+    >
+      <button
+        onClick={onClose}
+        className="absolute right-4 top-4 m-4 z-20 inline-flex items-center justify-center w-10 h-10 rounded-full border border-white/20 bg-white/10 text-white hover:bg-white/20 transition"
+        aria-label="Close preview"
+      >
+        <MdClose className="w-5 h-5" />
+      </button>
+
+      <div className="h-full w-full flex items-center justify-center">
+        <button
+          onClick={onPrev}
+          className="hidden sm:inline-flex items-center justify-center w-10 h-10 rounded-full border border-white/20 bg-white/10 text-white hover:bg-white/20 transition mr-3"
+          aria-label="Previous image"
+        >
+          <span className="text-xl">‹</span>
+        </button>
+
+        <div
+          className="relative w-full h-full rounded-2xl overflow-hidden border border-white/10 touch-pan-y"
+          onTouchStart={onTouchStart}
+          onTouchMove={onTouchMove}
+          onTouchEnd={onTouchEnd}
+        >
+          <Image
+            src={project.images[imageIndex]}
+            alt={`${project.title} preview ${imageIndex + 1}`}
+            fill
+            sizes="100vw"
+            className="object-contain"
+            priority
+          />
+        </div>
+
+        <button
+          onClick={onNext}
+          className="hidden sm:inline-flex items-center justify-center w-10 h-10 rounded-full border border-white/20 bg-white/10 text-white hover:bg-white/20 transition ml-3"
+          aria-label="Next image"
+        >
+          <span className="text-xl">›</span>
+        </button>
+      </div>
+
+      <div className="mt-3 flex items-center justify-between text-white/80 text-sm">
+        <span id={dialogTitleId} className="font-semibold text-(--accent)">
+          {project.title}
+        </span>
+        <span>
+          {imageIndex + 1} / {project.images.length}
+        </span>
+      </div>
+
+      <div className="sm:hidden mt-3 flex items-center justify-center gap-3">
+        <button
+          onClick={onPrev}
+          className="inline-flex items-center justify-center w-10 h-10 rounded-full border border-white/20 bg-white/10 text-white hover:bg-white/20 transition"
+          aria-label="Previous image"
+        >
+          <span className="text-xl">‹</span>
+        </button>
+        <button
+          onClick={onNext}
+          className="inline-flex items-center justify-center w-10 h-10 rounded-full border border-white/20 bg-white/10 text-white hover:bg-white/20 transition"
+          aria-label="Next image"
+        >
+          <span className="text-xl">›</span>
+        </button>
+      </div>
+    </div>
+  </div>
+);
 
 const WorkSection = () => {
   const [previewProjectIndex, setPreviewProjectIndex] = useState<number | null>(
     null,
   );
   const [previewImageIndex, setPreviewImageIndex] = useState(0);
-
-  const openPreview = (projectIndex: number) => {
-    setPreviewProjectIndex(projectIndex);
-    setPreviewImageIndex(0);
-  };
+  const touchStartX = useRef<number | null>(null);
+  const touchEndX = useRef<number | null>(null);
+  const dialogRef = useRef<HTMLDivElement | null>(null);
+  const previouslyFocusedRef = useRef<HTMLElement | null>(null);
 
   const closePreview = () => {
     setPreviewProjectIndex(null);
+    setPreviewImageIndex(0);
+    if (previouslyFocusedRef.current) {
+      previouslyFocusedRef.current.focus();
+    }
+  };
+
+  useEffect(() => {
+    if (previewProjectIndex === null) return;
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        closePreview();
+      }
+    };
+    document.addEventListener("keydown", handleKeyDown);
+    return () => document.removeEventListener("keydown", handleKeyDown);
+  }, [previewProjectIndex]);
+
+  useEffect(() => {
+    if (previewProjectIndex === null) return;
+    previouslyFocusedRef.current = document.activeElement as HTMLElement | null;
+    const dialog = dialogRef.current;
+    if (!dialog) return;
+    dialog.focus();
+
+    const focusableSelector =
+      "button, [href], input, select, textarea, [tabindex]:not([tabindex='-1'])";
+    const handleTrap = (event: KeyboardEvent) => {
+      if (event.key !== "Tab") return;
+      const focusable = Array.from(
+        dialog.querySelectorAll<HTMLElement>(focusableSelector),
+      ).filter((el) => !el.hasAttribute("disabled"));
+      if (focusable.length === 0) return;
+      const first = focusable[0];
+      const last = focusable[focusable.length - 1];
+      if (event.shiftKey && document.activeElement === first) {
+        event.preventDefault();
+        last.focus();
+      } else if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault();
+        first.focus();
+      }
+    };
+
+    dialog.addEventListener("keydown", handleTrap);
+    return () => dialog.removeEventListener("keydown", handleTrap);
+  }, [previewProjectIndex]);
+
+  const openPreview = (projectIndex: number) => {
+    setPreviewProjectIndex(projectIndex);
     setPreviewImageIndex(0);
   };
 
@@ -33,13 +262,42 @@ const WorkSection = () => {
     const total = work[previewProjectIndex].images.length;
     setPreviewImageIndex((idx) => (idx + 1) % total);
   };
+
+  const handleTouchStart = (event: React.TouchEvent<HTMLDivElement>) => {
+    touchStartX.current = event.touches[0]?.clientX ?? null;
+    touchEndX.current = null;
+  };
+
+  const handleTouchMove = (event: React.TouchEvent<HTMLDivElement>) => {
+    touchEndX.current = event.touches[0]?.clientX ?? null;
+  };
+
+  const handleTouchEnd = () => {
+    if (touchStartX.current === null || touchEndX.current === null) return;
+    const deltaX = touchStartX.current - touchEndX.current;
+    const threshold = 50;
+    if (deltaX > threshold) {
+      goNext();
+    } else if (deltaX < -threshold) {
+      goPrev();
+    }
+    touchStartX.current = null;
+    touchEndX.current = null;
+  };
+  const dialogTitleId =
+    previewProjectIndex !== null
+      ? `project-preview-title-${previewProjectIndex}`
+      : undefined;
+  const activeProject =
+    previewProjectIndex !== null ? work[previewProjectIndex] : null;
+
   return (
-    <main id="projects" className="card-design w-full">
-      <section className="flex flex-col gap-2">
-        <h1 className="text-(--accent) font-extrabold text-lg">Work</h1>
-        <h2 className="text-base font-semibold text-(--foreground)">
+    <section id="projects" className="card-design w-full">
+      <div className="flex flex-col gap-2">
+        <h2 className="text-(--accent) font-extrabold text-lg">Work</h2>
+        <h3 className="text-base font-semibold text-(--foreground)">
           Recent selected projects
-        </h2>
+        </h3>
         <p className="text-(--smoke) text-sm">
           A snapshot of commercial and personal work. Each link can route to a
           full case study with goals, process, and outcomes.
@@ -47,137 +305,33 @@ const WorkSection = () => {
 
         <div>
           {work.map((project: WorkProject, idx: number) => (
-            <div
+            <WorkCard
               key={project.title}
-              className="border border-gray-500/50 rounded-2xl py-3 px-4 mb-4 bg-gray-800/70 text-(--secondary-accent) relative cursor-pointer"
-              onClick={() => openPreview(idx)}
-            >
-              <div className="flex items-start justify-between gap-4">
-                <div>
-                  <p className="font-bold text-(--accent)">{project.title}</p>
-                  <span className="block mt-1">{project.description}</span>
-                  <ul className="flex flex-wrap items-center gap-2 mt-3">
-                    {project.usedTools.map((tool: string) => (
-                      <li
-                        key={tool}
-                        className="text-sm border border-gray-500/40 rounded-full py-1 px-2 bg-gray-800/60"
-                      >
-                        {tool}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-
-                <div className="flex items-center gap-3">
-                  {project.link && (
-                    <a
-                      href={project.link}
-                      target="_blank"
-                      rel="noreferrer"
-                      onClick={(e) => e.stopPropagation()}
-                      className="relative z-20 inline-flex items-center justify-center w-9 h-9 rounded-full bg-gray-800/60 border border-gray-500/40 hover:bg-cyan-500/70 hover:border-cyan-500/60 transition-all duration-300 hover:scale-110 hover:shadow-md hover:shadow-cyan-500/30"
-                      aria-label={`Open ${project.title}`}
-                    >
-                      <MdOpenInNew className="w-4 h-4" />
-                    </a>
-                  )}
-                </div>
-              </div>
-
-              <div className="mt-4">
-                <div className="relative w-full rounded-xl overflow-hidden border border-gray-500/40 bg-gray-900/50">
-                  <div className="relative w-full aspect-video">
-                    <img
-                      src={project.images[0]}
-                      alt={`${project.title} screenshot`}
-                      className="w-full h-full object-cover"
-                    />
-                  </div>
-                </div>
-              </div>
-            </div>
+              project={project}
+              onOpen={() => openPreview(idx)}
+            />
           ))}
         </div>
 
-        {previewProjectIndex !== null &&
+        {activeProject &&
           typeof document !== "undefined" &&
           createPortal(
-            <div
-              className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/40 backdrop-blur-md"
-              onClick={closePreview}
-            >
-              <div
-                className="relative w-screen h-screen border border-white/20 bg-white/10 backdrop-blur-xl shadow-2xl p-4 sm:p-6"
-                onClick={(e) => e.stopPropagation()}
-              >
-                <button
-                  onClick={closePreview}
-                  className="absolute right-4 top-4 inline-flex items-center justify-center w-10 h-10 rounded-full border border-white/20 bg-white/10 text-white hover:bg-white/20 transition"
-                  aria-label="Close preview"
-                >
-                  <MdClose className="w-5 h-5" />
-                </button>
-
-                <div className="h-full w-full flex items-center justify-center">
-                  <button
-                    onClick={goPrev}
-                    className="hidden sm:inline-flex items-center justify-center w-10 h-10 rounded-full border border-white/20 bg-white/10 text-white hover:bg-white/20 transition mr-3"
-                    aria-label="Previous image"
-                  >
-                    <span className="text-xl">‹</span>
-                  </button>
-
-                  <div className="relative w-full h-full rounded-2xl overflow-hidden border border-white/10">
-                    <img
-                      src={work[previewProjectIndex].images[previewImageIndex]}
-                      alt={`${work[previewProjectIndex].title} preview ${
-                        previewImageIndex + 1
-                      }`}
-                      className="w-full h-full object-contain"
-                    />
-                  </div>
-
-                  <button
-                    onClick={goNext}
-                    className="hidden sm:inline-flex items-center justify-center w-10 h-10 rounded-full border border-white/20 bg-white/10 text-white hover:bg-white/20 transition ml-3"
-                    aria-label="Next image"
-                  >
-                    <span className="text-xl">›</span>
-                  </button>
-                </div>
-
-                <div className="mt-3 flex items-center justify-between text-white/80 text-sm">
-                  <span className="font-semibold text-(--accent)">
-                    {work[previewProjectIndex].title}
-                  </span>
-                  <span>
-                    {previewImageIndex + 1} /{" "}
-                    {work[previewProjectIndex].images.length}
-                  </span>
-                </div>
-
-                <div className="sm:hidden mt-3 flex items-center justify-center gap-3">
-                  <button
-                    onClick={goPrev}
-                    className="inline-flex items-center justify-center w-10 h-10 rounded-full border border-white/20 bg-white/10 text-white hover:bg-white/20 transition"
-                    aria-label="Previous image"
-                  >
-                    <span className="text-xl">‹</span>
-                  </button>
-                  <button
-                    onClick={goNext}
-                    className="inline-flex items-center justify-center w-10 h-10 rounded-full border border-white/20 bg-white/10 text-white hover:bg-white/20 transition"
-                    aria-label="Next image"
-                  >
-                    <span className="text-xl">›</span>
-                  </button>
-                </div>
-              </div>
-            </div>,
+            <PreviewModal
+              project={activeProject}
+              imageIndex={previewImageIndex}
+              onClose={closePreview}
+              onPrev={goPrev}
+              onNext={goNext}
+              dialogTitleId={dialogTitleId}
+              dialogRef={dialogRef}
+              onTouchStart={handleTouchStart}
+              onTouchMove={handleTouchMove}
+              onTouchEnd={handleTouchEnd}
+            />,
             document.body,
           )}
-      </section>
-    </main>
+      </div>
+    </section>
   );
 };
 

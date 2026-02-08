@@ -13,7 +13,7 @@ const skills = [
     icon: <FaNodeJs className="text-green-600 w-6 h-6" />,
   },
   {
-    name: "Postgress",
+    name: "Postgres",
     icon: <SiPostgresql className="text-blue-700 w-6 h-6" />,
   },
   {
