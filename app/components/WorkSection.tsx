@@ -22,7 +22,7 @@ const WorkCard = ({ project, onOpen }: WorkCardProps) => {
 
   return (
     <div
-      className="border border-gray-500/50 rounded-2xl py-3 px-4 mb-4 bg-gray-800/70 text-(--secondary-accent) relative cursor-pointer"
+      className="w-full border border-gray-500/50 rounded-2xl py-3 px-4 mb-4 bg-gray-800/70 text-(--secondary-accent) relative cursor-pointer"
       onClick={onOpen}
       onKeyDown={handleKeyDown}
       role="button"
@@ -30,7 +30,7 @@ const WorkCard = ({ project, onOpen }: WorkCardProps) => {
       aria-label={`Open ${project.title} preview`}
     >
       <div className="flex items-start justify-between gap-4">
-        <div>
+        <div className="w-full">
           <p className="font-bold text-(--accent)">{project.title}</p>
           <span className="block mt-1">{project.description}</span>
           <ul className="flex flex-wrap items-center gap-2 mt-3">
@@ -292,7 +292,7 @@ const WorkSection = () => {
     previewProjectIndex !== null ? work[previewProjectIndex] : null;
 
   return (
-    <section id="projects" className="card-design w-full">
+    <section id="projects" className="card-design w-full p-4 sm:p-8">
       <div className="flex flex-col gap-2">
         <h2 className="text-(--accent) font-extrabold text-lg">Work</h2>
         <h3 className="text-base font-semibold text-(--foreground)">

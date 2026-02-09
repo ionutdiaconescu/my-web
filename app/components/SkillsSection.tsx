@@ -5,10 +5,13 @@ const SkillsSection = () => {
   const splitIndex = Math.ceil(skills.length / 2);
   const topRow = skills.slice(0, splitIndex);
   const bottomRow = skills.slice(splitIndex);
-  const thirdIndex = Math.ceil(skills.length / 3);
-  const rowOne = skills.slice(0, thirdIndex);
-  const rowTwo = skills.slice(thirdIndex, thirdIndex * 2);
-  const rowThree = skills.slice(thirdIndex * 2);
+  const quarterIndex = Math.ceil(skills.length / 4);
+  const rowOne = skills.slice(0, quarterIndex);
+  const rowTwo = skills.slice(quarterIndex, quarterIndex * 2);
+  const rowThree = skills.slice(quarterIndex * 2, quarterIndex * 3);
+  const rowFour = skills.slice(quarterIndex * 3);
+  const hasThirdRow = rowThree.length > 0;
+  const hasFourthRow = rowFour.length > 0;
   const baseChipClass =
     "relative flex items-center gap-2 border border-gray-500/50 rounded-2xl py-2 px-3 bg-gray-800/70 text-(--secondary-accent)";
   const connectorRight =
@@ -56,7 +59,10 @@ const SkillsSection = () => {
         <div className="flex lg:hidden">
           <div className="inline-flex flex-col gap-3">
             {renderRow(rowOne, "flex items-center gap-3", ({ isLast }) =>
-              [!isLast ? connectorRight : "", isLast ? connectorDownBefore : ""]
+              [
+                !isLast ? connectorRight : "",
+                isLast && hasThirdRow ? connectorDownBefore : "",
+              ]
                 .filter(Boolean)
                 .join(" "),
             )}
@@ -65,13 +71,27 @@ const SkillsSection = () => {
               rowTwo,
               "flex items-center gap-3 flex-row-reverse",
               ({ isLast }) =>
-                [!isLast ? connectorLeft : "", isLast ? connectorDownAfter : ""]
+                [
+                  !isLast ? connectorLeft : "",
+                  isLast && hasThirdRow ? connectorDownAfter : "",
+                ]
                   .filter(Boolean)
                   .join(" "),
             )}
 
             {renderRow(rowThree, "flex items-center gap-3", ({ isLast }) =>
-              !isLast ? connectorRight : "",
+              [
+                !isLast ? connectorRight : "",
+                isLast && hasFourthRow ? connectorDownBefore : "",
+              ]
+                .filter(Boolean)
+                .join(" "),
+            )}
+
+            {renderRow(
+              rowFour,
+              "flex items-center gap-3 flex-row-reverse",
+              ({ isLast }) => (!isLast ? connectorLeft : ""),
             )}
           </div>
         </div>

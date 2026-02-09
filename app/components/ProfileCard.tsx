@@ -42,7 +42,7 @@ const ProfileCard = () => {
           <p className="text-(--smoke) text-sm sm:text-base leading-relaxed">
             {profileCardData.description}
           </p>
-          <div className="flex gap-3">
+          <div className="flex flex-wrap gap-3">
             <span className="border-2 text-(--accent) text-xs sm:text-sm rounded-full px-3 py-1 font-semibold">
               {profileCardData.status}
             </span>
@@ -60,11 +60,13 @@ const ProfileCard = () => {
             <div className="flex items-center gap-3 group">
               <a
                 href={`mailto:${profileCardData.email}`}
-                className="inline-flex items-center gap-3 rounded-full border border-(--accent) bg-(--background)/60 px-4 py-2.5 text-(--foreground) shadow-sm transition-all hover:scale-[1.02] hover:shadow-md hover:text-(--accent)"
+                className="inline-flex w-full max-w-full flex-wrap items-center gap-3 rounded-full border border-(--accent) bg-(--background)/60 px-4 py-2.5 text-(--foreground) shadow-sm transition-all hover:scale-[1.02] hover:shadow-md hover:text-(--accent)"
               >
                 <MdOutlineEmail className="w-4 h-4 text-(--accent) group-hover:scale-110 transition-transform" />
-                <span className="font-medium text-sm">Email</span>
-                <span className="text-sm text-(--smoke)">
+                <span className="font-medium text-sm hidden sm:inline">
+                  Email
+                </span>
+                <span className="text-xs text-(--smoke) break-all sm:text-sm">
                   {profileCardData.email}
                 </span>
               </a>

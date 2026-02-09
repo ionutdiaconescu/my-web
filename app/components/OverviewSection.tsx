@@ -8,6 +8,10 @@ const OverviewSection = () => {
   const bottomRow = overviewItems.slice(splitIndex);
   const baseItemClass =
     "relative flex items-center gap-3 border border-gray-500/50 rounded-full py-2 px-4 bg-gray-800/70 text-(--secondary-accent)";
+  const baseMobileItemClass =
+    "relative flex items-start gap-3 border border-gray-500/50 rounded-2xl py-3 px-4 bg-gray-800/70 text-(--secondary-accent)";
+  const mobileConnector =
+    "after:content-[''] after:absolute after:left-7 after:top-full after:h-3 after:w-0.5 after:rounded-full after:bg-linear-to-b after:from-cyan-400/70 after:to-gray-600/20 after:shadow-[0_0_10px_rgba(34,211,238,0.35)]";
   const connectorRight =
     "after:content-[''] after:absolute after:top-1/2 after:right-0 after:h-0.5 after:w-3 after:translate-x-3 after:-translate-y-1/2 after:rounded-full after:bg-linear-to-r after:from-cyan-400/70 after:to-transparent after:shadow-[0_0_10px_rgba(34,211,238,0.35)]";
   const connectorDown =
@@ -36,7 +40,35 @@ const OverviewSection = () => {
           predictable behavior, clean code, and interactions that feel natural
           on every device.
         </p>
-        <div className="flex">
+        <div className="flex md:hidden">
+          <div className="flex flex-col gap-3 w-full">
+            {overviewItems.map((item: OverviewItem, index: number) => (
+              <div
+                key={item.title}
+                className={[
+                  baseMobileItemClass,
+                  index < overviewItems.length - 1 ? mobileConnector : "",
+                ]
+                  .filter(Boolean)
+                  .join(" ")}
+              >
+                <span className="flex items-center justify-center w-8 h-8 rounded-full bg-gray-900/70 border border-gray-500/50 text-(--accent) text-xs font-bold shrink-0">
+                  {String(index + 1).padStart(2, "0")}
+                </span>
+                <div className="leading-tight">
+                  <p className="font-semibold text-sm text-(--foreground)">
+                    {item.title}
+                  </p>
+                  <span className="text-xs text-(--smoke)">
+                    {item.description}
+                  </span>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <div className="hidden md:flex">
           <div className="inline-flex flex-col gap-3">
             <div className="flex items-center gap-3">
               {topRow.map((item: OverviewItem, index: number) => {
