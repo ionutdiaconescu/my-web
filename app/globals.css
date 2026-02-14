@@ -1,5 +1,14 @@
 @import "tailwindcss";
 
+@theme {
+  --color-primary: #050b22; /* primary global background */
+  --color-secondary: #08162a; /* lighter surface for cards */
+  --color-foreground: #b6d8ee; /* readable text on dark bg */
+  --color-accent: #22d3ee; /* accent */
+  --color-secondary-accent: #a2f4fd;
+  --color-smoke: #b1b8c4;
+}
+
 /* Default global palette — use dark background as requested */
 :root {
   --background: #050b22; /* primary global background */
@@ -8,19 +17,7 @@
   --accent: #22d3ee; /* accent */
   --secondary-accent: #a2f4fd;
   --smoke: #b1b8c4;
-  --card-radius: 12px;
   scroll-behavior: smooth;
-}
-
-/* Keep prefers-color-scheme dark block in case OS signals dark mode — values match defaults */
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #050b22;
-    --foreground: #b6d8ee;
-    --accent: #22d3ee;
-    --secondary-bg: #071428;
-    --smoke: #b1b8c4;
-  }
 }
 
 body {
@@ -39,7 +36,7 @@ section[id] {
   .card-design {
     @apply w-full p-8
     rounded-4xl
-    bg-(--secondary-bg)/90
+    bg-secondary/90
     backdrop-blur-xl
     border
     border-gray-700/50

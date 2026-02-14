@@ -7,9 +7,9 @@ const OverviewSection = () => {
   const topRow = overviewItems.slice(0, splitIndex);
   const bottomRow = overviewItems.slice(splitIndex);
   const baseItemClass =
-    "relative flex items-center gap-3 border border-gray-500/50 rounded-full py-2 px-4 bg-gray-800/70 text-(--secondary-accent)";
+    "relative flex items-center gap-3 border border-gray-500/50 rounded-full py-2 px-4 bg-gray-800/70 text-secondary-accent";
   const baseMobileItemClass =
-    "relative flex items-start gap-3 border border-gray-500/50 rounded-2xl py-3 px-4 bg-gray-800/70 text-(--secondary-accent)";
+    "relative flex items-start gap-3 border border-gray-500/50 rounded-2xl py-3 px-4 bg-gray-800/70 text-secondary-accent";
   const mobileConnector =
     "after:content-[''] after:absolute after:left-7 after:top-full after:h-3 after:w-0.5 after:rounded-full after:bg-linear-to-b after:from-cyan-400/70 after:to-gray-600/20 after:shadow-[0_0_10px_rgba(34,211,238,0.35)]";
   const connectorRight =
@@ -31,11 +31,11 @@ const OverviewSection = () => {
   return (
     <section id="overview" className="card-design">
       <div className="flex flex-col gap-2">
-        <h2 className="text-(--accent) font-extrabold text-lg">Overview</h2>
-        <h3 className="text-base font-semibold text-(--foreground)">
+        <h2 className="text-accent font-extrabold text-lg">Overview</h2>
+        <h3 className="text-base font-semibold text-foreground">
           From ideas to interfaces
         </h3>
-        <p className="text-(--smoke) text-sm">
+        <p className="text-smoke text-sm">
           Projects move from loose concept to well-structured UI with
           predictable behavior, clean code, and interactions that feel natural
           on every device.
@@ -52,16 +52,14 @@ const OverviewSection = () => {
                   .filter(Boolean)
                   .join(" ")}
               >
-                <span className="flex items-center justify-center w-8 h-8 rounded-full bg-gray-900/70 border border-gray-500/50 text-(--accent) text-xs font-bold shrink-0">
+                <span className="flex items-center justify-center w-8 h-8 rounded-full bg-gray-900/70 border border-gray-500/50 text-accent text-xs font-bold shrink-0">
                   {String(index + 1).padStart(2, "0")}
                 </span>
                 <div className="leading-tight">
-                  <p className="font-semibold text-sm text-(--foreground)">
+                  <p className="font-semibold text-sm text-foreground">
                     {item.title}
                   </p>
-                  <span className="text-xs text-(--smoke)">
-                    {item.description}
-                  </span>
+                  <span className="text-xs text-smoke">{item.description}</span>
                 </div>
               </div>
             ))}
@@ -79,14 +77,14 @@ const OverviewSection = () => {
                     key={item.title}
                     className={getTopRowClass(isFirst, isLast)}
                   >
-                    <span className="flex items-center justify-center w-8 h-8 rounded-full bg-gray-900/70 border border-gray-500/50 text-(--accent) text-xs font-bold">
+                    <span className="flex items-center justify-center w-8 h-8 rounded-full bg-gray-900/70 border border-gray-500/50 text-accent text-xs font-bold">
                       {String(index + 1).padStart(2, "0")}
                     </span>
                     <div className="leading-tight">
-                      <p className="font-semibold text-sm text-(--foreground)">
+                      <p className="font-semibold text-sm text-foreground">
                         {item.title}
                       </p>
-                      <span className="text-xs text-(--smoke)">
+                      <span className="text-xs text-smoke">
                         {item.description}
                       </span>
                     </div>
@@ -100,14 +98,14 @@ const OverviewSection = () => {
                 const isLast = index === bottomRow.length - 1;
                 return (
                   <div key={item.title} className={getBottomRowClass(isLast)}>
-                    <span className="flex items-center justify-center w-8 h-8 rounded-full bg-gray-900/70 border border-gray-500/50 text-(--accent) text-xs font-bold">
+                    <span className="flex items-center justify-center w-8 h-8 rounded-full bg-gray-900/70 border border-gray-500/50 text-accent text-xs font-bold">
                       {String(index + splitIndex + 1).padStart(2, "0")}
                     </span>
                     <div className="leading-tight">
-                      <p className="font-semibold text-sm text-(--foreground)">
+                      <p className="font-semibold text-sm text-foreground">
                         {item.title}
                       </p>
-                      <span className="text-xs text-(--smoke)">
+                      <span className="text-xs text-smoke">
                         {item.description}
                       </span>
                     </div>

@@ -13,7 +13,14 @@ const NavBar = () => {
     if (!href.startsWith("#")) return;
     event.preventDefault();
 
-    const target = document.querySelector(href);
+    if (href === "#home") {
+      setIsOpen(false);
+      window.scrollTo({ top: 0, behavior: "smooth" });
+      window.history.replaceState(null, "", "/");
+      return;
+    }
+
+    const target = document.getElementById(href.substring(1));
     if (!target) return;
 
     setIsOpen(false);
@@ -23,7 +30,7 @@ const NavBar = () => {
   };
 
   const baseLinkClass =
-    "relative cursor-pointer font-semibold text-(--secondary-accent) group";
+    "relative cursor-pointer font-semibold text-secondary-accent group";
   const renderLinks = (
     links: { label: string; href: string }[],
     extraClassName = "",
@@ -44,8 +51,8 @@ const NavBar = () => {
     ));
 
   return (
-    <nav className="fixed top-0 left-0 z-50 w-full">
-      <div className="max-w-7xl mx-auto px-8 py-4">
+    <nav className="fixed top-0 left-0 z-50 w-full bg-transparent md:bg-primary">
+      <div className=" px-10 xl:px-24 py-4">
         <div className="flex items-center justify-between">
           <div className="hidden md:flex items-center gap-8">
             {renderLinks(navLinks)}
@@ -57,7 +64,7 @@ const NavBar = () => {
             aria-expanded={isOpen}
             aria-controls="mobile-nav"
             onClick={() => setIsOpen((prev) => !prev)}
-            className="md:hidden ml-auto m-2 inline-flex items-center justify-center w-10 h-10 rounded-full border border-gray-500/50 bg-black/50 backdrop-blur-md text-(--secondary-accent) transition hover:bg-black/50"
+            className="md:hidden ml-auto m-2 inline-flex items-center justify-center w-10 h-10 rounded-full border border-gray-500/50 bg-black/50 backdrop-blur-md text-secondary-accent transition hover:bg-black/50"
           >
             <span className="sr-only">Open menu</span>
             <div className="flex flex-col gap-1">

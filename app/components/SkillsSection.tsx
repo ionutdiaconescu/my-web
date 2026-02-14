@@ -13,7 +13,7 @@ const SkillsSection = () => {
   const hasThirdRow = rowThree.length > 0;
   const hasFourthRow = rowFour.length > 0;
   const baseChipClass =
-    "relative flex items-center gap-2 border border-gray-500/50 rounded-2xl py-2 px-3 bg-gray-800/70 text-(--secondary-accent)";
+    "relative flex items-center gap-2 border border-gray-500/50 rounded-2xl py-2 px-3 bg-gray-800/70 text-secondary-accent";
   const connectorRight =
     "after:content-[''] after:absolute after:top-1/2 after:right-0 after:h-0.5 after:w-3 after:translate-x-3 after:-translate-y-1/2 after:rounded-full after:bg-linear-to-r after:from-cyan-400/70 after:to-transparent after:shadow-[0_0_10px_rgba(34,211,238,0.35)]";
   const connectorLeft =
@@ -48,11 +48,11 @@ const SkillsSection = () => {
   return (
     <section id="skills" className="card-design w-full">
       <div className="flex flex-col gap-2">
-        <h2 className="text-(--accent) font-extrabold text-lg">Skills</h2>
-        <h3 className="text-base font-semibold text-(--foreground)">
+        <h2 className="text-accent font-extrabold text-lg">Skills</h2>
+        <h3 className="text-base font-semibold text-foreground">
           Tools used most days
         </h3>
-        <p className="text-(--smoke) text-sm">
+        <p className="text-smoke text-sm">
           A focused front-end stack covering modern frameworks, state
           management, and styling approaches.
         </p>
