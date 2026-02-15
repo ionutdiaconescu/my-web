@@ -9,4 +9,5 @@ export type WorkProject = {
   usedTools: string[];
   images: string[];
   link?: string;
+  githubLink?: string;
 };

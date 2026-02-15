@@ -57,19 +57,22 @@ const SkillsSection = () => {
           management, and styling approaches.
         </p>
         <div className="flex lg:hidden">
-          <div className="inline-flex flex-col gap-3">
-            {renderRow(rowOne, "flex items-center gap-3", ({ isLast }) =>
-              [
-                !isLast ? connectorRight : "",
-                isLast && hasThirdRow ? connectorDownBefore : "",
-              ]
-                .filter(Boolean)
-                .join(" "),
+          <div className="inline-flex flex-col items-center gap-3">
+            {renderRow(
+              rowOne,
+              "flex items-center justify-center gap-3",
+              ({ isLast }) =>
+                [
+                  !isLast ? connectorRight : "",
+                  isLast && hasThirdRow ? connectorDownBefore : "",
+                ]
+                  .filter(Boolean)
+                  .join(" "),
             )}
 
             {renderRow(
               rowTwo,
-              "flex items-center gap-3 flex-row-reverse",
+              "flex items-center justify-center gap-3 flex-row-reverse",
               ({ isLast }) =>
                 [
                   !isLast ? connectorLeft : "",
@@ -79,18 +82,21 @@ const SkillsSection = () => {
                   .join(" "),
             )}
 
-            {renderRow(rowThree, "flex items-center gap-3", ({ isLast }) =>
-              [
-                !isLast ? connectorRight : "",
-                isLast && hasFourthRow ? connectorDownBefore : "",
-              ]
-                .filter(Boolean)
-                .join(" "),
+            {renderRow(
+              rowThree,
+              "flex items-center justify-center gap-3",
+              ({ isLast }) =>
+                [
+                  !isLast ? connectorRight : "",
+                  isLast && hasFourthRow ? connectorDownBefore : "",
+                ]
+                  .filter(Boolean)
+                  .join(" "),
             )}
 
             {renderRow(
               rowFour,
-              "flex items-center gap-3 flex-row-reverse",
+              "flex items-center justify-center gap-3 flex-row-reverse",
               ({ isLast }) => (!isLast ? connectorLeft : ""),
             )}
           </div>

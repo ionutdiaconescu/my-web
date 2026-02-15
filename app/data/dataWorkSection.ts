@@ -12,6 +12,7 @@ const work: WorkProject[] = [
       "/images/dndPerformance/DNDimg3.webp",
     ],
     link: "https://www.ambalaje-dnd.com/",
+    githubLink: "https://github.com/ionutdiaconescu/dnd-packaging-products",
   },
   {
     title: "TeamChat",
@@ -24,6 +25,7 @@ const work: WorkProject[] = [
       "/images/teamChat/TeamChat3.webp",
     ],
     link: "https://example.com/real-estate",
+    githubLink: "https://github.com/ionutdiaconescu/TeamChat",
   },
   {
     title: "Asociatia Zambete Magice",
@@ -37,12 +39,9 @@ const work: WorkProject[] = [
       "Postgres",
       "Strapi CMS",
     ],
-    images: [
-      "https://via.placeholder.com/1200x800?text=SaaS+1",
-      "https://via.placeholder.com/1200x800?text=SaaS+2",
-      "https://via.placeholder.com/1200x800?text=SaaS+3",
-    ],
+    images: ["/images/zambeteMagice/coming-soon.svg"],
     link: "https://asociatia-zambete-magice.vercel.app/",
+    githubLink: "https://github.com/ionutdiaconescu/asociatia_zambete_magice",
   },
   {
     title: "Arde Car Wash",
@@ -54,6 +53,7 @@ const work: WorkProject[] = [
       "/images/carWash/CarWash3.webp",
     ],
     link: "https://arde-car-wash.netlify.app/",
+    githubLink: "https://github.com/ionutdiaconescu/arde-car-wash",
   },
 ];
 
