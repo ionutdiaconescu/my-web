@@ -39,7 +39,11 @@ const work: WorkProject[] = [
       "Postgres",
       "Strapi CMS",
     ],
-    images: ["/images/zambeteMagice/coming-soon.svg"],
+    images: [
+      "/images/zambeteMagice/zm1.webp",
+      "/images/zambeteMagice/zm2.webp",
+      "/images/zambeteMagice/zm3.webp",
+    ],
     link: "https://asociatia-zambete-magice.vercel.app/",
     githubLink: "https://github.com/ionutdiaconescu/asociatia_zambete_magice",
   },
