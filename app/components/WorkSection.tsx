@@ -23,22 +23,26 @@ const WorkCard = ({ project, onOpen }: WorkCardProps) => {
 
   return (
     <div
-      className="w-full border border-gray-500/50 rounded-2xl py-3 px-4 mb-4 bg-gray-800/70 text-secondary-accent relative cursor-pointer"
+      className="relative mb-4 w-full cursor-pointer rounded-2xl border border-gray-500/50 bg-gray-800/70 px-4 py-3 text-secondary-accent"
       onClick={onOpen}
       onKeyDown={handleKeyDown}
       role="button"
       tabIndex={0}
       aria-label={`Open ${project.title} preview`}
     >
-      <div className="flex items-start justify-between gap-4">
-        <div className="w-full">
-          <p className="font-bold text-accent">{project.title}</p>
-          <span className="block mt-1">{project.description}</span>
-          <ul className="flex flex-wrap items-center gap-2 mt-3">
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between sm:gap-4">
+        <div className="w-full min-w-0">
+          <p className="text-base font-bold leading-tight text-accent sm:text-lg">
+            {project.title}
+          </p>
+          <span className="mt-1 block text-sm leading-relaxed text-smoke sm:text-base">
+            {project.description}
+          </span>
+          <ul className="mt-3 flex flex-wrap items-center gap-2">
             {project.usedTools.map((tool: string) => (
               <li
                 key={tool}
-                className="text-sm border border-gray-500/40 rounded-full py-1 px-2 bg-gray-800/60"
+                className="rounded-full border border-gray-500/40 bg-gray-800/60 px-2 py-1 text-xs sm:text-sm"
               >
                 {tool}
               </li>
@@ -46,7 +50,7 @@ const WorkCard = ({ project, onOpen }: WorkCardProps) => {
           </ul>
         </div>
 
-        <div className="flex items-center gap-3">
+        <div className="flex w-full items-center justify-end gap-3 sm:w-auto sm:justify-start sm:pt-1">
           {project.link && (
             <a
               href={project.link}
@@ -132,7 +136,7 @@ const PreviewModal = ({
     >
       <button
         onClick={onClose}
-        className="absolute right-4 top-4 m-4 z-20 inline-flex items-center justify-center w-10 h-10 rounded-full border border-white/20 bg-white/10 text-white hover:bg-white/20 transition"
+        className="absolute right-4 top-4 z-20 inline-flex h-10 w-10 items-center justify-center rounded-full border border-white/20 bg-white/10 text-white transition hover:bg-white/20"
         aria-label="Close preview"
       >
         <MdClose className="w-5 h-5" />

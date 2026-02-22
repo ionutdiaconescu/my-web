@@ -40,7 +40,7 @@ const OverviewSection = () => {
           predictable behavior, clean code, and interactions that feel natural
           on every device.
         </p>
-        <div className="flex md:hidden">
+        <div className="flex lg:hidden">
           <div className="flex flex-col gap-3 w-full">
             {overviewItems.map((item: OverviewItem, index: number) => (
               <div
@@ -66,7 +66,7 @@ const OverviewSection = () => {
           </div>
         </div>
 
-        <div className="hidden md:flex">
+        <div className="hidden lg:flex">
           <div className="inline-flex flex-col gap-3">
             <div className="flex items-center gap-3">
               {topRow.map((item: OverviewItem, index: number) => {

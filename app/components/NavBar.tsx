@@ -52,7 +52,7 @@ const NavBar = () => {
 
   return (
     <nav className="fixed top-0 left-0 z-50 w-full bg-transparent md:bg-primary">
-      <div className=" px-10 xl:px-24 py-4">
+      <div className="px-4 py-4 sm:px-8 xl:px-24">
         <div className="flex items-center justify-between">
           <div className="hidden md:flex items-center gap-8">
             {renderLinks(navLinks)}

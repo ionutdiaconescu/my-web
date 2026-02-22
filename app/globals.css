@@ -34,7 +34,7 @@ section[id] {
 }
 @layer components {
   .card-design {
-    @apply w-full p-8
+    @apply w-full p-5 sm:p-8
     rounded-4xl
     bg-secondary/90
     backdrop-blur-xl

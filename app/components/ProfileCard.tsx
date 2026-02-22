@@ -7,8 +7,8 @@ import { FaLinkedin, FaGithub } from "react-icons/fa";
 
 const ProfileCard = () => {
   return (
-    <section className="flex justify-center min-[1400px]:items-start w-full min-w-120 xl:sticky xl:top-24 xl:overflow-hidden card-design">
-      <div className="flex flex-col gap-4 sm:w-140 lg:w-130 relative">
+    <section className="flex justify-center min-[1400px]:items-start w-full min-w-0 min-[1400px]:min-w-120 xl:sticky xl:top-24 xl:overflow-hidden card-design">
+      <div className="flex flex-col gap-4 w-full max-w-full sm:w-140 lg:w-130 relative">
         <section className="flex flex-col gap-4">
           <div className="flex gap-2">
             <div className="w-24 h-24 border-2 border-accent rounded-full overflow-hidden flex items-center justify-center">
@@ -57,7 +57,7 @@ const ProfileCard = () => {
             <div className="flex items-center gap-3 group">
               <a
                 href={`mailto:${profileCardData.email}`}
-                className="inline-flex flex-wrap items-center gap-3 rounded-full border border-accent bg-primary/60 px-4 py-2.5 text-foreground shadow-sm transition-all hover:scale-[1.02] hover:shadow-md hover:text-accent"
+                className="inline-flex w-full flex-wrap items-center gap-3 rounded-full border border-accent bg-primary/60 px-4 py-2.5 text-foreground shadow-sm transition-all hover:scale-[1.02] hover:shadow-md hover:text-accent sm:w-fit"
               >
                 <MdOutlineEmail className="w-4 h-4 text-accent group-hover:scale-110 transition-transform" />
                 <span className="font-medium text-sm hidden sm:inline">
