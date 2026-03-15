@@ -55,7 +55,7 @@ const WorkCard = ({ project, onOpen }: WorkCardProps) => {
             <a
               href={project.link}
               target="_blank"
-              rel="noreferrer"
+              rel="noopener noreferrer"
               onClick={(e) => e.stopPropagation()}
               className="relative z-20 inline-flex items-center justify-center w-9 h-9 rounded-full bg-gray-800/60 border border-gray-500/40 hover:bg-cyan-500/70 hover:border-cyan-500/60 transition-all duration-300 hover:scale-110 hover:shadow-md hover:shadow-cyan-500/30"
               aria-label={`Open ${project.title}`}
@@ -68,7 +68,7 @@ const WorkCard = ({ project, onOpen }: WorkCardProps) => {
             <a
               href={project.githubLink}
               target="_blank"
-              rel="noreferrer"
+              rel="noopener noreferrer"
               onClick={(e) => e.stopPropagation()}
               className="relative z-20 inline-flex items-center justify-center w-9 h-9 rounded-full bg-gray-800/60 border border-gray-500/40 hover:bg-cyan-500/70 hover:border-cyan-500/60 transition-all duration-300 hover:scale-110 hover:shadow-md hover:shadow-cyan-500/30"
               aria-label={`Open ${project.title} GitHub repository`}
