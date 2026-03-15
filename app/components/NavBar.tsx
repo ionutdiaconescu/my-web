@@ -31,6 +31,8 @@ const NavBar = () => {
 
   const baseLinkClass =
     "relative cursor-pointer font-semibold text-secondary-accent group";
+  const mobileLinkClass =
+    "flex min-h-12 w-full items-center justify-end rounded-xl border border-gray-500/30 bg-black/25 px-4 py-3 text-lg leading-none transition hover:border-cyan-400/60 hover:bg-black/40";
   const renderLinks = (
     links: { label: string; href: string }[],
     extraClassName = "",
@@ -64,13 +66,13 @@ const NavBar = () => {
             aria-expanded={isOpen}
             aria-controls="mobile-nav"
             onClick={() => setIsOpen((prev) => !prev)}
-            className="md:hidden ml-auto m-2 inline-flex items-center justify-center w-10 h-10 rounded-full border border-gray-500/50 bg-black/50 backdrop-blur-md text-secondary-accent transition hover:bg-black/50"
+            className="md:hidden ml-auto m-1 inline-flex h-13 w-13 items-center justify-center rounded-full border border-gray-500/50 bg-black/50 backdrop-blur-md text-secondary-accent transition hover:bg-black/50"
           >
             <span className="sr-only">Open menu</span>
-            <div className="flex flex-col gap-1">
-              <span className="block h-0.5 w-5 bg-current"></span>
-              <span className="block h-0.5 w-5 bg-current"></span>
-              <span className="block h-0.5 w-5 bg-current"></span>
+            <div className="flex flex-col gap-1.5">
+              <span className="block h-0.5 w-6 bg-current"></span>
+              <span className="block h-0.5 w-6 bg-current"></span>
+              <span className="block h-0.5 w-6 bg-current"></span>
             </div>
           </button>
         </div>
@@ -79,10 +81,10 @@ const NavBar = () => {
           <div className="md:hidden mt-2 flex justify-end">
             <div
               id="mobile-nav"
-              className="w-[80vw] max-w-xs rounded-2xl border border-gray-500/30 bg-black/30 backdrop-blur-sm px-5 py-5"
+              className="w-[86vw] max-w-sm rounded-3xl border border-gray-500/30 bg-black/30 px-4 py-4 backdrop-blur-sm"
             >
-              <div className="flex flex-col gap-4 items-end">
-                {renderLinks(navLinks, "text-base")}
+              <div className="flex flex-col gap-3 items-stretch">
+                {renderLinks(navLinks, mobileLinkClass)}
               </div>
             </div>
           </div>
